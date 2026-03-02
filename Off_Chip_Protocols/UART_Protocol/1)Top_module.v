@@ -14,7 +14,18 @@ output [7:0] dout);
 wire tx_en,rx_en; //from baud generators to transmitter and receiver
 wire Tx;    //serial output from Transmitter to the Receiver
   
+reg rx_sync1,rx_sync2;
 
+always @(posedge r_clk or posedge rst) begin
+  if(rst)begin
+    rx_sync1<=1'b1;
+    rx_sync2<=1'b1;
+  end 
+  else begin
+    rx_sync1<=Tx;
+    rx_sync2<=rx_sync1;
+  end
+end
 
   
 transmitter_baud_gen tbg(.clk(t_clk),
@@ -36,7 +47,7 @@ UART_Transmitter  transmit(.clk(t_clk),
 UART_Receiver receive(.clk(r_clk),
               .rst(rst),
               .rx_en(rx_en),
-                      .Rx(Tx),
+                      .Rx(rx_sync2),
               .done(done),
               .dout(dout),
               .frame_err(frame_err),
