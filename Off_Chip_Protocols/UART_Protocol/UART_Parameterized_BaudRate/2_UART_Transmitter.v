@@ -1,3 +1,6 @@
+`include "7_Parity_Gen.v"
+`include "6_PISO.v"
+
 module UART_Transmitter (clk,rst,tx_en,w_en,TDR,Tx,busy);
 input clk,rst,tx_en,w_en;
 input [7:0] TDR;
