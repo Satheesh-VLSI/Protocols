@@ -27,10 +27,10 @@ top DUT (.t_clk(t_clk),
 );
 
 
-always #20 t_clk=~t_clk;   // 50MHz
+always #10 t_clk=~t_clk;   // 50MHz
 
 
-always #10 r_clk=~r_clk;   //100MHZ
+always #5 r_clk=~r_clk;   //100MHZ
 
 initial begin
     t_clk=0;
