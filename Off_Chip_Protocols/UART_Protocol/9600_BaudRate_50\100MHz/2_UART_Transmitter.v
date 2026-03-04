@@ -1,5 +1,5 @@
-`include "PISO.v"
-`include "Parity.v"
+`include "8_PISO.v"
+`include "6_Parity.v"
 
 module UART_Transmitter(clk,rst,tx_en,w_en,TDR,Tx,busy);
 input clk,rst,tx_en,w_en;

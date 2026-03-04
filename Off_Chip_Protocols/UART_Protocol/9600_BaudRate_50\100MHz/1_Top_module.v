@@ -1,7 +1,7 @@
-`include "UART_Transmitter.v"
-`include "UART_Receiver.v"
-`include "Transmitter_Baud_gen.v"
-`include "Receiver_Baud_gen.v"
+`include "2_UART_Transmitter.v"
+`include "3_UART_Receiver.v"
+`include "4_Transmitter_Baud_gen.v"
+`include "5_Receiver_Baud_Gen.v"
 
 
 module top(
