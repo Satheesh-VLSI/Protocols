@@ -42,11 +42,11 @@ initial begin
     #200;
     rst=0;
 
-   
-  repeat(10) @(posedge t_clk);
+  
+  repeat(10) begin @(posedge t_clk);
 
    
-    TDR=8'd49;  
+    TDR=TDR+30; 
     w_en=1;
     @(posedge t_clk);
     w_en=0;
@@ -61,7 +61,7 @@ initial begin
     $display("FrameErr=%b",frame_err);
     $display("ParityErr=%b",parity_err);
   $display("************************************");
-
+end
     #2000;
     $finish;
 end
