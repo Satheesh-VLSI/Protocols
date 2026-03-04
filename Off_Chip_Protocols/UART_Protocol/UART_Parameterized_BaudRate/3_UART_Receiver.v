@@ -1,4 +1,6 @@
-//UART Receiver with 8 Data bit - 1 Stop bit - 9600 baud rate for 100Mhz
+//UART Receiver with 8 Data bit - 1 Stop bit 
+`include "8_O_Parity_check.v"
+
 
 module UART_Receiver(clk,rst,rx_en,Rx,done,dout,frame_err,parity_err);
 input clk,rst,rx_en;
