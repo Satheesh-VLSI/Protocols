@@ -51,11 +51,11 @@ end
 always @(*)begin
 	next_state=state;
 	case(state)
-		IDLE: next_state<=(w_en)? START:IDLE;
-		START: next_state<=(tx_en)? DATA:START;
-		DATA: next_state<=((tx_en==1)&&(counter==3'd7))? PARITY:DATA;
-		PARITY: next_state<=(tx_en)? STOP:PARITY;
-		STOP:next_state<=(tx_en)? IDLE:STOP;
+		IDLE: next_state=(w_en)? START:IDLE;
+		START: next_state=(tx_en)? DATA:START;
+		DATA: next_state=((tx_en==1)&&(counter==3'd7))? PARITY:DATA;
+		PARITY: next_state=(tx_en)? STOP:PARITY;
+		STOP:next_state=(tx_en)? IDLE:STOP;
 	endcase
 
 end

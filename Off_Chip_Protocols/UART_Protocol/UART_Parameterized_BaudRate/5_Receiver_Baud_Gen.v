@@ -1,4 +1,3 @@
-
 module receiver_baud_gen #(parameter baudrate=115200,r_frq=100000000)(clk,rst,rx_en);
 input clk,rst;
 output reg rx_en;
@@ -23,3 +22,6 @@ always @(posedge clk or posedge rst)begin
 
         end
 endmodule
+
+
+

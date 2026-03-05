@@ -1,4 +1,3 @@
-
 //Right  shift
 module PISO (input [7:0] Data_in,input load, clk,rst,tx_en,output reg Q );
   reg [7:0]Q_temp;

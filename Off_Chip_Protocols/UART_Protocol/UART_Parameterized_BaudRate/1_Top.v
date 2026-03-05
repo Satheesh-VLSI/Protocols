@@ -3,7 +3,8 @@
 `include "4_Transmitter_Baud_Gen.v"
 `include "5_Receiver_Baud_Gen.v"
 
-module top #(parameter baudrate=115200,t_frq=50000000,r_frq=100000000) (
+
+module top #(parameter baudrate=57600,t_frq=50000000,r_frq=100000000) (
 input t_clk,r_clk,rst,w_en,
 input [7:0] TDR,
 output busy,done,frame_err,parity_err,
@@ -54,3 +55,4 @@ UART_Receiver receive(.clk(r_clk),
               
               
 endmodule
+

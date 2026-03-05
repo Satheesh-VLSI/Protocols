@@ -1,4 +1,3 @@
-
 module transmitter_baud_gen #(parameter baudrate=115200,t_frq=50000000)(clk,rst,tx_en);
 input clk,rst;
 output reg tx_en;
@@ -23,4 +22,5 @@ always @(posedge clk or posedge rst)begin
 
         end 
 endmodule
+
 

@@ -45,15 +45,15 @@ end
 always @(*)begin
         next_state=state;
         case(state)
-		  IDLE: next_state<=(Rx==0)? START:IDLE;
+		  IDLE: next_state=(Rx==0)? START:IDLE;
           START:begin  if (sample_mid && Rx==1)
                             next_state = IDLE;
                        else
-                            next_state<=(sample_end)?DATA:START; 
+                            next_state=(sample_end)?DATA:START; 
                  end
-          DATA: next_state<=((sample_end)&&(index==3'd7))? PARITY:DATA;
-          PARITY: next_state<=(sample_end)? STOP:PARITY;
-          STOP:next_state<=(sample_end)?IDLE:STOP;
+          DATA: next_state=((sample_end)&&(index==3'd7))? PARITY:DATA;
+          PARITY: next_state=(sample_end)? STOP:PARITY;
+          STOP:next_state=(sample_end)?IDLE:STOP;
         endcase
 end
 //output logic upon states
@@ -121,3 +121,4 @@ always @(posedge clk or posedge rst)begin
         endcase
     end
 endmodule
+
