@@ -1,3 +1,5 @@
+`include "3_SPI_Slave.v"
+`include "2_SPI_Master.v"
 module top #(parameter size=8)(clk,rst,en,data_in,finish,mdata_out,ready,data_out);
 input clk,rst,en;
 input [size-1:0] data_in; 
