@@ -23,16 +23,22 @@ module spi_slave(
              LOAD=2'b01,
              TRANSFER=2'b10,
              DONE=2'b11;
+
+ // ╔══════════════════════════════════════╗
+ // ║  STATE TRANSITION SEQUENTIAL LOGIC   ║
+ // ╚══════════════════════════════════════╝
   
   always@(posedge i_clk)begin
-    if(cs)
+	if(cs)            //CS acts as reset for slave as it doesnt have reset for its own
       state<=IDLE;
     else
       state<=next;
   end
   
   
-  //next state combinational logic
+ // ╔══════════════════════════════════════╗
+ // ║    NEXT STATE COMBINATIONAL LOGIC    ║
+ // ╚══════════════════════════════════════╝
   always @(*)begin
     next=state;
     case(state)
@@ -43,7 +49,10 @@ module spi_slave(
            default:next=IDLE;
     endcase
   end
-      
+
+ // ╔══════════════════════════════════════╗
+ // ║         OUTPUTS UPON STATES          ║
+ // ╚══════════════════════════════════════╝	
        always@(posedge i_clk)begin
          if(cs)begin
           bit_count<=0;
