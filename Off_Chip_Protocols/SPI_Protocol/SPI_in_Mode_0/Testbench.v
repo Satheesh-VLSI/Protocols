@@ -10,24 +10,22 @@ module tb_top;
     always #10 m_clk = ~m_clk;  // 50MHz Master's System clock
     always #5  s_clk = ~s_clk;  // 100MHz Slave's System clcok
     
-    top dut (
-        .m_clk(m_clk),
-        .s_clk(s_clk),
-        .rst(rst),
-        .start_en(start_en),
-        .m_data_in(m_data_in),
-        .s_data_in(s_data_in),
-        .m_data_out(m_data_out),
-        .s_data_out(s_data_out),
-        .m_busy(m_busy),
-        .m_done(m_done),
-        .s_busy(s_busy),
-        .s_done(s_done)
-    );
+    top  dut(.m_clk(m_clk),
+             .s_clk(s_clk),
+             .rst(rst),
+             .start_en(start_en),
+             .m_data_in(m_data_in),
+             .s_data_in(s_data_in),
+             .m_data_out(m_data_out),
+             .s_data_out(s_data_out),
+             .m_busy(m_busy),
+             .m_done(m_done),
+             .s_busy(s_busy),
+             .s_done(s_done));
     
     initial begin
         $dumpfile("spi.vcd");
-        $dumpvars(0, tb_top);
+        $dumpvars;
         
         // Test Case 1
         rst = 1; #20 rst= 0;
