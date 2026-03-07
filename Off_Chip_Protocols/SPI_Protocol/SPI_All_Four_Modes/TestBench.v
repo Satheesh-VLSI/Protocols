@@ -1,5 +1,5 @@
 module tb_top #(parameter MODE=2'b11);
-    reg m_clk = 0, s_clk = 0, rst = 0, start_en = 0;
+    reg m_clk,s_clk,rst,start_en;
     reg [7:0] m_data_in;
     reg [7:0] s_data_in;
     
@@ -26,6 +26,7 @@ module tb_top #(parameter MODE=2'b11);
     );
     
     initial begin
+        m_clk=0;s_clk=0;start_en=0;
         $dumpfile("spi.vcd");
         $dumpvars(0, tb_top);
         
