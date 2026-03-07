@@ -43,8 +43,8 @@ module spi_master #(parameter MODE=2'b00) (
   assign sample_edge1=(CPOL==1 && CPHA==0)?falling_edge:rising_edge;
   assign shift_edge1=(CPOL==1 && CPHA==0)?rising_edge:falling_edge;
   
-  assign sample_edge= (CPOL)?sample_edge1:sample_edge0;
-  assign shift_edge= (CPOL)?shift_edge1:shift_edge0;
+  assign sample_edge=(CPOL)?sample_edge1:sample_edge0;
+  assign shift_edge=(CPOL)?shift_edge1:shift_edge0;
 
   // ╔══════════════════════════════════════╗
   // ║       SCLK GENERATOR (INSIDE!)       ║
@@ -55,7 +55,7 @@ module spi_master #(parameter MODE=2'b00) (
             clk_count<= 2'b0;
           end 
         else if(clk_count==2'd1)begin
-            sclk<= ~sclk;        // Toggle every 4 sys_clk
+            sclk<=~sclk;        // Toggle every 4 sys_clk
             clk_count<=2'b0;
           end 
         else begin
@@ -128,7 +128,7 @@ module spi_master #(parameter MODE=2'b00) (
                 bit_count<=0;   //making the count 0
                 sclk_enable<=1;  //enabling the sclk generator
                 if(CPHA==0)
-                       o_mosi <= i_tx_data[7];   // preload only for CPHA=0
+                       o_mosi<=i_tx_data[7];   // preload only for CPHA=0
               end
               TRANSFER:begin
                 
@@ -137,23 +137,23 @@ module spi_master #(parameter MODE=2'b00) (
                  end
                 
                                 
-                if(shift_edge) begin 
-                  if(bit_count < 8 && CPHA==0) 
-                    bit_count <= bit_count + 1; 
+                if(shift_edge)begin 
+                  if(bit_count<8 && CPHA==0) 
+                    bit_count<=bit_count + 1; 
                   
                 end 
-                if(sample_edge) begin 
-                  if(bit_count < 8 && CPHA==1) 
-                    bit_count <= bit_count + 1; 
+                if(sample_edge)begin 
+                  if(bit_count<8 && CPHA==1) 
+                    bit_count<=bit_count + 1; 
                 end
                 
                 if(shift_edge)begin  //falling edge
                   if(bit_count<=7)begin
-                    if(CPHA && bit_count == 0)
-                            o_mosi <= tx_shift[7];
+                    if(CPHA && bit_count==0)
+                            o_mosi<=tx_shift[7];
                     else begin
-                            tx_shift <= {tx_shift[6:0],1'b0};
-                            o_mosi  <= tx_shift[6];
+                            tx_shift<={tx_shift[6:0],1'b0};
+                            o_mosi<=tx_shift[6];
                     end
                     
                   end
