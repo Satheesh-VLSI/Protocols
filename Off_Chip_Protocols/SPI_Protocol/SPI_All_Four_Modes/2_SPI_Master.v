@@ -1,4 +1,4 @@
-module spi_master #(MODE=2'b00) (
+module spi_master #(parameter MODE=2'b00) (
   input i_clk,    //system clock
   input i_rst,
   input start_en,  //signal to start the master

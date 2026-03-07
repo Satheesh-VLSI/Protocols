@@ -1,4 +1,4 @@
-module spi_slave  #(MODE=2'b00)(
+module spi_slave  #(parameter MODE=2'b00)(
   input i_clk,     //system clock of slave
   input sclk,       //synchronous clock from master
   input cs,          //slave select
