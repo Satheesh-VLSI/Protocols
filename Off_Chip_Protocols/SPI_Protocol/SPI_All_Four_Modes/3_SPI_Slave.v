@@ -83,7 +83,7 @@ module spi_slave  #(parameter MODE=2'b00)(
           o_rx_data<=0;
         end
         else begin
-          s_done <= 0; 
+          s_done<=0; 
           
           case(state)
               IDLE:begin
@@ -98,31 +98,31 @@ module spi_slave  #(parameter MODE=2'b00)(
                 s_busy<=1;       // the master became busy
                 bit_count<=0;   //making the count 0
                 if(CPHA==0)
-                       o_miso <= i_tx_data[7];   // preload only for CPHA=0
+                       o_miso<=i_tx_data[7];   // preload only for CPHA=0
               end
               TRANSFER:begin
                 
                 if (sample_edge)begin 
-                  rx_shift<={rx_shift[6:0],i_mosi};  //input from slave is sampled here
+                  rx_shift<={rx_shift[6:0],i_mosi};  //input from MASTER is sampled here
                  end
                 
-                if(shift_edge) begin 
-                  if(bit_count < 8 && CPHA==0) 
-                    bit_count <= bit_count + 1; 
+                if(shift_edge)begin 
+                  if(bit_count<8 && CPHA==0) 
+                    bit_count<=bit_count+1;    
                   
                 end 
-                if(sample_edge) begin 
-                  if(bit_count < 8 && CPHA==1) 
-                    bit_count <= bit_count + 1; 
+                if(sample_edge)begin 
+                  if(bit_count<8 && CPHA==1) 
+                    bit_count<=bit_count+1; 
                 end
                 
                 if(shift_edge)begin  
                   if(bit_count<=7)begin
-                    if(CPHA && bit_count == 0)
-                            o_miso <= tx_shift[7];
+                    if(CPHA && bit_count==0)
+                            o_miso<=tx_shift[7];       //OUTPUT FOR THE MASTER IS SHIFTED HERE
                     else begin
-                            tx_shift <= {tx_shift[6:0],1'b0};
-                            o_miso  <= tx_shift[6];
+                            tx_shift<={tx_shift[6:0],1'b0};
+                            o_miso<=tx_shift[6];
                     end
                   end
                 end
@@ -132,7 +132,7 @@ module spi_slave  #(parameter MODE=2'b00)(
                 s_busy<=0;
                 bit_count<=0;
                 o_rx_data<=rx_shift;
-                o_miso<= 1'bz;
+                o_miso<=1'bz;
                 
               end
           endcase
