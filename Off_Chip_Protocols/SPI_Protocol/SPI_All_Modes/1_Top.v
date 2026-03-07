@@ -1,3 +1,5 @@
+`include "2_SPI_Master.v"
+`include "3_SPI_Slave.v"
 module top #(parameter MODE=2'b00)(
     input  wire m_clk,      //Master clock
     input  wire s_clk,      //Slave clock  
