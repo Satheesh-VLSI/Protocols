@@ -98,17 +98,13 @@ endtask
 
 
 
-
-
-
-//  TEST SEQUENCE 
+//  TEST SEries 
 initial begin
-
+PCLK = 0;
     $dumpfile("apb.vcd");
     $dumpvars(0, APB_tb);
 
-    PCLK = 0;
-
+    
     reset();
 
     // WRITE 
@@ -128,7 +124,7 @@ initial begin
     apb_read(10'd21);
     apb_read(10'd195);
     apb_read(10'd731);
-  apb_read(10'b111010x001);
+    apb_read(10'd795);
     apb_read(10'd283);
     apb_read(10'd1019);
     apb_read(10'd58);
