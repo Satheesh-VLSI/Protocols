@@ -1,3 +1,6 @@
+`include "3_APB_Slave.v"
+`include "2_APB_Master.v"
+
 `timescale 1ns/1ps
 module APB3  (
   input PCLK,    //system clock
