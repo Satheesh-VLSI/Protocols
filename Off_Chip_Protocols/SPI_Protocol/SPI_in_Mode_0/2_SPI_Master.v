@@ -24,7 +24,7 @@ module spi_master(
   reg sclk_p; //for edge detection
 
   // ╔══════════════════════════════════════╗
-  // ║       SCLK GENERATOR (INSIDE!)       ║
+  // ║       SCLK GENERATOR (INSIDE)        ║
   // ╚══════════════════════════════════════╝
   always @(posedge i_clk) begin
         if (i_rst|| !sclk_enable)begin
