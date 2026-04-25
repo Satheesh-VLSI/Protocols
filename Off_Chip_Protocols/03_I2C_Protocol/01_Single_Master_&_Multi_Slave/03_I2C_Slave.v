@@ -88,8 +88,8 @@ module I2C_SLAVE #(parameter slave_address=7'd50)(
   always @(*) begin
     next=state;
     case(state)
-      IDLE:        next=IDLE; 
-      START:       next=scl_falling?SLAVE_ADDR:START;
+      IDLE      :  next=IDLE; 
+      START     :  next=scl_falling?SLAVE_ADDR:START;
       SLAVE_ADDR:  next=(bit_count==8&&scl_falling)?ACK1:SLAVE_ADDR;
       ACK1: begin
         if(!saddr_shift[0]) 
@@ -97,19 +97,20 @@ module I2C_SLAVE #(parameter slave_address=7'd50)(
         else             
           next=(scl_falling)?((slave_address==saddr_shift[7:1])?READ_DATA:IDLE):ACK1;
       end
-      REG_ADDR:    next=(bit_count==8&&scl_falling)?ACK2:REG_ADDR;
+      REG_ADDR  :  next=(bit_count==8&&scl_falling)?ACK2:REG_ADDR;
       ACK2: begin
-        if(!RW)    next=(scl_falling)?WRITE_DATA:ACK2;
-        else       next=(scl_falling)?IDLE:ACK2; 
+        if(!RW)    
+          next=(scl_falling)?WRITE_DATA:ACK2;
+        else       
+          next=(scl_falling)?IDLE:ACK2; 
       end
       WRITE_DATA:  next=(bit_count==8&&scl_falling)?ACK3:WRITE_DATA;
-      ACK3:        next=(scl_falling)?WRITE_DATA:ACK3; 
-      READ_DATA:   next=(bit_count==7&&scl_falling)?ACK4:READ_DATA;
-      ACK4:        next=(scl_falling)?((master_ack)?READ_DATA:IDLE):ACK4;
-      default:     next=IDLE;
+      ACK3      :  next=(scl_falling)?WRITE_DATA:ACK3; 
+      READ_DATA :  next=(bit_count==7&&scl_falling)?ACK4:READ_DATA;
+      ACK4      :  next=(scl_falling)?((master_ack)?READ_DATA:IDLE):ACK4;
+      default   :  next=IDLE;
     endcase
   end
-
   //-----------------------------------------
   //      All the register's we use
   //-----------------------------------------
