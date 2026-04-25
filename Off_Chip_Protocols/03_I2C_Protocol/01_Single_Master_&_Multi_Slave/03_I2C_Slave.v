@@ -1,3 +1,4 @@
+`include "04_Single_Port_RAM.v"
 module I2C_SLAVE #(parameter slave_address=7'd50)(
   input clk,  // Slave System clock
   input rst, // rst
