@@ -1,3 +1,6 @@
+`include "02_I2C_Master.v"
+`include "03_I2C_Slave.v"
+
 module I2C_Top (
     input m_clk,         // Master's system clock
     input s_clk,        // Slave's system clock
