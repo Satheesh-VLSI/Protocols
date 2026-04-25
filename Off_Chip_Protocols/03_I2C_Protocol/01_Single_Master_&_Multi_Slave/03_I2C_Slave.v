@@ -143,8 +143,11 @@ module I2C_SLAVE #(parameter slave_address=7'd50)(
         done<=1; sda_high<=1; valid<=0;
     end
     else if(start_detect) begin
-      sda_high<=1; bit_count<=0; valid<=0;
-      sda_prev<=sda_sync2; scl_prev<=scl_sync2;
+      sda_high<=1;
+      bit_count<=0;
+      valid<=0;
+      sda_prev<=sda_sync2;
+      scl_prev<=scl_sync2;
     end
     else begin
       sda_prev<=sda_sync2;
@@ -152,12 +155,16 @@ module I2C_SLAVE #(parameter slave_address=7'd50)(
 
       case(state)
         IDLE: begin
-          master_ack<=0; valid<=0; done<=0;
-          sda_high<=1; bit_count<=0;
+          master_ack<=0;
+          valid<=0; 
+          done<=0;
+          sda_high<=1; 
+          bit_count<=0;
         end
         
         START: begin
-          sda_high<=1; bit_count<=0;
+          sda_high<=1;
+          bit_count<=0;
         end
         
         SLAVE_ADDR: begin
@@ -168,11 +175,14 @@ module I2C_SLAVE #(parameter slave_address=7'd50)(
             
             if(scl_falling) begin
                 if(bit_count==8) begin
-                    if(slave_address==saddr_shift[7:1]) begin
-                        sda_high<=0; 
-                        RW<=saddr_shift[0]; 
-                        if(saddr_shift[0]==1) valid<=1; 
-                    end else sda_high<=1; 
+                  if(slave_address==saddr_shift[7:1]) begin
+                      sda_high<=0; 
+                      RW<=saddr_shift[0];
+                      if(saddr_shift[0]==1)
+                          valid<=1; 
+                    end 
+                  else 
+                      sda_high<=1; 
                     
                     bit_count<=0;
                 end
@@ -182,15 +192,18 @@ module I2C_SLAVE #(parameter slave_address=7'd50)(
         ACK1: begin
             if(scl_falling) begin
                 if(slave_address==saddr_shift[7:1]) begin
-                    if(saddr_shift[0]==0) begin
+                  if(saddr_shift[0]==0) begin
                         sda_high<=1; 
                         valid<=0;
-                    end else begin
+                    end 
+                  else begin
                         sda_high<=r_data[7];
                         read_shift<={r_data[6:0],1'b0};
                         valid<=0;
                     end
-                end else sda_high<=1; 
+                end 
+              else 
+                sda_high<=1; 
             end
         end
         
@@ -210,7 +223,8 @@ module I2C_SLAVE #(parameter slave_address=7'd50)(
         end
         
         ACK2: begin
-            if(scl_falling) sda_high<=1; 
+            if(scl_falling) 
+              sda_high<=1; 
         end
         
         WRITE_DATA: begin
@@ -233,7 +247,8 @@ module I2C_SLAVE #(parameter slave_address=7'd50)(
             if(scl_falling) begin
                 sda_high<=1; 
                 valid<=0;
-                if(reg_addr<255) reg_addr<=reg_addr+1; 
+                if(reg_addr<255)
+                  reg_addr<=reg_addr+1; 
             end
         end
         
