@@ -52,7 +52,7 @@ module I2C_MASTER(
           end
     end
 
-  reg [3:0] state, next;
+  reg [3:0] state,next;
   localparam  IDLE=0,  START=1, SLAVE_ADDR=2,   ACK1=3,    REG_ADDR=4,
               ACK2=5,  WDATA=6, ACK3=7,         RESTART=8, SLAVE_ADDR_R=9,
               ACK4=10, READ=11, MASTER_NACK=12, STOP=13;
@@ -89,6 +89,7 @@ module I2C_MASTER(
   //-----------------------------------------
   wire scl_rising, scl_falling;
   reg scl_prev;
+  
   assign scl_rising=(!scl_prev&&scl_sync2);
   assign scl_falling=(scl_prev&&!scl_sync2);
   
@@ -100,21 +101,21 @@ module I2C_MASTER(
     case(state)
       IDLE        :  next=start_en?START:IDLE;
       START       :  next=(scl_falling&&sda_high==0)?SLAVE_ADDR:START;
-      SLAVE_ADDR  : next=(bit_count==8&&scl_falling)?ACK1:SLAVE_ADDR;
+      SLAVE_ADDR  :  next=(bit_count==8 && scl_falling)?ACK1:SLAVE_ADDR;
       ACK1        :  next=(scl_falling)?((!ack_err)?REG_ADDR:STOP):ACK1;
-      REG_ADDR    :  next=(bit_count==8&&scl_falling)?ACK2:REG_ADDR;
+      REG_ADDR    :  next=(bit_count==8 && scl_falling)?ACK2:REG_ADDR;
       ACK2: begin
         if(!RW)      next=(scl_falling)?((!ack_err)?WDATA:STOP):ACK2;
         else         next=(scl_falling)?((!ack_err)?RESTART:STOP):ACK2;
       end
-      WDATA       :  next=(bit_count==8&&scl_falling)?ACK3:WDATA;
+      WDATA       :  next=(bit_count==8 && scl_falling)?ACK3:WDATA;
       ACK3        :  next=(scl_falling)?STOP:ACK3; 
       RESTART     :  next=(scl_falling&&sda_high==0)?SLAVE_ADDR_R:RESTART;
-      SLAVE_ADDR_R:  next=(bit_count==8&&scl_falling)?ACK4:SLAVE_ADDR_R;
+      SLAVE_ADDR_R:  next=(bit_count==8 && scl_falling)?ACK4:SLAVE_ADDR_R;
       ACK4        :  next=(scl_falling)?((!ack_err)?READ:STOP):ACK4;
-      READ        :  next=(bit_count==8&&scl_falling)?MASTER_NACK:READ;
+      READ        :  next=(bit_count==8 && scl_falling)?MASTER_NACK:READ;
       MASTER_NACK :  next=(scl_falling)?STOP:MASTER_NACK;
-      STOP        : next=(scl_rising)?IDLE:STOP;
+      STOP        :  next=(scl_rising)?IDLE:STOP;
       default     :  next=IDLE;
     endcase
   end
@@ -122,26 +123,26 @@ module I2C_MASTER(
   //-----------------------------------------
   //      All the register's we use
   //-----------------------------------------
-      reg [7:0] saddr_shift;
-      reg [7:0] regaddr_shift;
-      reg [7:0] wdata_shift;
-      reg [7:0] read_shift;
-      reg [3:0] bit_count; 
+  reg [7:0] saddr_shift;
+  reg [7:0] regaddr_shift;
+  reg [7:0] wdata_shift;
+  reg [7:0] read_shift;
+  reg [3:0] bit_count; 
   //==========================================
   //         STATE DATAPATH BLOCK
   //==========================================
   always @(posedge clk) begin
    if(rst) begin
-    r_data        <=0;
-    done          <=0;
-    sda_high      <=1;
-    scl_prev      <=0;
-    bit_count     <=0;
-    saddr_shift   <=0;
-    regaddr_shift <=0;
-    wdata_shift   <=0;
-    read_shift    <=0;
-    ack_err       <=0;
+    r_data       <=0;
+    done       <=0;
+    sda_high     <=1;
+    scl_prev     <=0;
+    bit_count    <=0;
+    saddr_shift  <=0;
+    regaddr_shift<=0;
+    wdata_shift  <=0;
+    read_shift   <=0;
+    ack_err      <=0;
    end
     else begin
       scl_prev<=scl_sync2;
@@ -172,8 +173,8 @@ module I2C_MASTER(
           if(scl_falling) begin
             if(bit_count<8) begin 
               sda_high<=saddr_shift[7];
-              saddr_shift<={saddr_shift[6:0],1'b0};
-              bit_count<=bit_count+1;
+              saddr_shift <={saddr_shift[6:0],1'b0};
+              bit_count <=bit_count+1;
             end else begin
                 sda_high<=1;   //we release the sdal ine in this state itself for next state ack sampling
                 bit_count<=0;
@@ -183,8 +184,10 @@ module I2C_MASTER(
         //*****SLAVE ADDRESS ACKNOWLEDGEMENT***** 
         ACK1: begin  
           if(scl_rising) begin
-            if(sda_sync2) ack_err<=1;
-            else ack_err<=0;
+            if(sda_sync2) 
+              ack_err<=1;
+            else 
+              ack_err<=0;
             bit_count<=0;
           end
           if(scl_falling) begin
@@ -211,8 +214,10 @@ module I2C_MASTER(
         //*****REGISTER ADDRESS ACKNOWLEDGEMENT*****
         ACK2: begin
           if(scl_rising) begin
-            if(sda_sync2) ack_err<=1;
-            else ack_err<=0;
+            if(sda_sync2) 
+              ack_err<=1;
+            else 
+              ack_err<=0;
             bit_count<=0;
           end
           if(scl_falling) begin
@@ -244,8 +249,10 @@ module I2C_MASTER(
         //*****WRITE DATA ACKNOWLEDGEMENT*****
         ACK3: begin
          if(scl_rising) begin
-           if(sda_sync2) ack_err<=1;
-           else ack_err<=0;
+           if(sda_sync2) 
+             ack_err<=1;
+           else
+             ack_err<=0;
            bit_count<=0;
          end
          if(scl_falling) sda_high<=0; 
@@ -275,8 +282,10 @@ module I2C_MASTER(
         //*****SLAVE ADDRESS ACKNOWLEDGEMENT*****
         ACK4: begin
           if(scl_rising) begin
-            if(sda_sync2) ack_err<=1;
-            else ack_err<=0;
+            if(sda_sync2) 
+              ack_err<=1;
+            else 
+              ack_err<=0;
             bit_count<=0;
           end
           if(scl_falling) sda_high<=1; 
@@ -285,13 +294,14 @@ module I2C_MASTER(
         READ: begin
           if(scl_rising) begin
             read_shift<={read_shift[6:0],sda_sync2};
-            bit_count<=bit_count+1; // FIX: Simply count all 8 bits!
+            bit_count<=bit_count+1; 
           end
         end
         //*****MASTER'S ACKNOWLEDGEMENT*****
         MASTER_NACK: begin
-          if(scl_falling) sda_high<=0; 
-          bit_count<=0; // FIX: Reset count here
+          if(scl_falling) 
+            sda_high<=0; 
+          bit_count<=0; 
         end
         
         STOP: begin
