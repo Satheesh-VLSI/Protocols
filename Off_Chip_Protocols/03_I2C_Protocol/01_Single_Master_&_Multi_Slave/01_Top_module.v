@@ -16,9 +16,9 @@ module I2C_Top (
     output m_done,         // master's done flag
     output m_ack_err,      // Acknowledge error
     
-    output s_done1,        // Status: Slave 1 operation done
-    output s_done2,        // Status: Slave 2 operation done
-    output s_done3         // Status: Slave 3 operation done
+    output s_done1,        // Slave 1 operation done
+    output s_done2,        //Slave 2 operation done
+    output s_done3         //Slave 3 operation done
 );
 
   wire sda;
