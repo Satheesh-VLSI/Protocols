@@ -9,7 +9,7 @@ module I2C_Top (
     input RW,            // Read/Write: 0=Write, 1=Read
 
     input [6:0] s_addr,  // Target slave device address
-  input [7:0] reg_addr,  // Internal register address(memory)
+    input [7:0] reg_addr,  // Internal register address(memory)
     input [7:0] w_data,    // Data to be written
 
     output [7:0] r_data,   // Data read from slave
